@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import sliverbars.api.exception.OrderNotFoundException;
 import sliverbars.api.service.SliverBarsService;
 import sliverbars.model.OrderRequest;
 
@@ -24,31 +25,37 @@ public class SliverBarsServiceImpl implements SliverBarsService {
 	private static final String BUY = "BUY";
 	private static final String SELL = "SELL";
 	private static final Logger LOGGER = LoggerFactory.getLogger(SliverBarsServiceImpl.class);
-
-	Map<Long, OrderRequest> orderMap = new HashMap<Long, OrderRequest>();
+	public static Map<Long, OrderRequest> orderMap = new HashMap<Long, OrderRequest>();
 	Long orderId = 0L;
-
+   
 	public Long postOrder(OrderRequest orderRequest) {
 		LOGGER.info("Class: SliverBarsServiceImpl ::  registerOrderPost()");
 		LOGGER.info("OrderType: " + orderRequest.getOrderType() + "OrderQuantity: " + orderRequest.getOrderQuantity()
 				+ "Price: " + orderRequest.getPrice() + "UserId: " + orderRequest.getUserId());
-
+	
 		orderId++;
 		orderRequest.setOrderId(orderId);
 		orderMap.put(orderId, orderRequest);
-	   //setMockOrderData(); For testing only created mocked data.
-		return orderId;
+		//setMockOrderData(); Enable it to test
+	  	return orderId;
 	}
 
 	@Override
 	public void deleteOrder(Long orderId) {
 		LOGGER.info("Class: SliverBarsServiceImpl ::  orderDelete()");
+		if (null == orderMap.get(orderId)) {
+			throw new OrderNotFoundException(orderId);
+		}
 		orderMap.remove(orderId);
+
 	}
 
 	@Override
 	public List<String> getLiveBoardSummary() {
 		LOGGER.info("Class: SliverBarsServiceImpl ::  getLiveBoardSummary()");
+		if (orderMap.size()==0) {
+			throw new OrderNotFoundException(0l);
+		}
 		List<OrderRequest> orderList = orderMap.values().stream().collect(Collectors.toList());
 
 		/*** Create SELL List ***/
@@ -85,11 +92,15 @@ public class SliverBarsServiceImpl implements SliverBarsService {
 	@Override
 	public List<OrderRequest> getOrderList() {
 		LOGGER.info("Class: SliverBarsServiceImpl ::  getOrderList()");
+		
+		if (orderMap.size()==0) {
+			throw new OrderNotFoundException(0l);
+		}
 		List<OrderRequest> orderList = orderMap.values().stream().collect(Collectors.toList());
 		return orderList;
 	}
 
-	private void setMockOrderData() {
+	public void setMockOrderData() {
 		orderMap.put(1l, new OrderRequest("user1", 3.5d, 306l, SELL, null));
 		orderMap.put(2l, new OrderRequest("user2", 1.2d, 310l, SELL, null));
 		orderMap.put(3l, new OrderRequest("user3", 1.5d, 307l, SELL, null));

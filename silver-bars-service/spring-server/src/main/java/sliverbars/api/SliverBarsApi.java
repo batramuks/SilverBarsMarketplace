@@ -27,8 +27,7 @@ public interface SliverBarsApi {
 	 * This method is used to delete or Cancel the registered by orderId
 	 * @param orderId
 	 */
-	@RequestMapping(value = "/sliverbarsmarketplace/order/{orderId}", produces = { "application/json" }, consumes = {
-			"application/json" }, method = RequestMethod.DELETE)
+	@RequestMapping(value = "/sliverbarsmarketplace/order/{orderId}", produces = { "application/json" },  method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteOrder(@PathVariable("orderId") Long orderId);
 	/***
 	 * This method will display the summary information of Live Orders.
@@ -41,8 +40,7 @@ public interface SliverBarsApi {
 	 * This method will show the list of orders
 	 * @return 
 	 */
-	@RequestMapping(value = "/sliverbarsmarketplace/order", produces = { "application/json" }, consumes = {
-			"application/json" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/sliverbarsmarketplace/order", produces = { "application/json" }, method = RequestMethod.GET)
 	public ResponseEntity<List<OrderRequest>> getOrderList();
 
 }

@@ -26,7 +26,7 @@ public class SliverBarsApiController implements SliverBarsApi {
 	public ResponseEntity<?> postOrder(@RequestBody OrderRequest orderRequest) {
 		LOGGER.info("Class: SliverBarsApiController ::  postOrder()");
 		Long orderId = sliverBarsService.postOrder(orderRequest);
-		return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+		return new ResponseEntity<Long>(orderId, HttpStatus.CREATED);
 
 	}
 
