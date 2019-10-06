@@ -11,7 +11,7 @@ public class OrderRequest {
 	public OrderRequest(){}
 	
 	public OrderRequest(String userId, Double orderQuantity, Long price, String orderType, Long orderId) {
-		super();
+	
 		this.userId = userId;
 		this.orderQuantity = orderQuantity;
 		this.price = price;
